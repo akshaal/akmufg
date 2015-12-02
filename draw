@@ -1,0 +1,4 @@
+#!/bin/sh
+
+export JAVA_OPTS="-Xmx8192m -server"
+scala akmufg.scala
