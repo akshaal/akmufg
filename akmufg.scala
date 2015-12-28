@@ -46,11 +46,11 @@ case class AkSim(days: Int = 365, stories: Int = 30, start: Int = 10, opt: Int =
 
 for {
     frame <- 1 to 34
-    start <- Seq(1)
+    start <- Seq(10)
     opt <- Seq(95)
     stories <- Seq(10000)
 
-    days = 900
+    days = 365
     sim = AkSim(start = start, days = days, opt = opt, stories = stories)
 
     height = 200
