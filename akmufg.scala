@@ -45,14 +45,14 @@ case class AkSim(days: Int = 365, stories: Int = 30, start: Int = 10, opt: Int =
 }
 
 for {
-    start <- Seq(1, 10, 50, 75, 95)
-    opt <- Seq(90, 95, 96, 97, 98, 99)
-    stories <- Seq(30, 10000)
+    start <- Seq(2, 3)
+    opt <- Seq(95)
+    stories <- Seq(10000)
 
-    days = Map(1 -> 900, 50 -> 200, 75 -> 150, 95 -> 150).getOrElse(start, 365)
+    days = 900
     sim = AkSim(start = start, days = days, opt = opt, stories = stories)
 
-    height = Map(1 -> 200, 10 -> 200, 50 -> 250, 75 -> 250, 95 -> 250).getOrElse(start, 100)
-    beauty <- Seq(false, true)
+    height = 200
+    beauty = true
 } sim.Plotter(colorbox = !beauty, beauty = beauty, height = height).plot()
 
