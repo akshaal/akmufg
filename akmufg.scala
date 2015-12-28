@@ -17,7 +17,7 @@ case class AkSim(days: Int = 365, stories: Int = 30, start: Int = 10, opt: Int =
     def mufgMultistories: Stream[Stream[Int]] = mufgStories.transpose
     lazy val mufgStoryHeat: Stream[Heat] = mufgMultistories map heat
 
-    case class Plotter(beauty: Boolean = true, colorbox: Boolean = true, height: Int = 100) {
+    case class Plotter(frame: Int, beauty: Boolean = true, colorbox: Boolean = true, height: Int = 100) {
         def mufgStoryHeat: Stream[Heat] = if (beauty) AkSim.this.mufgStoryHeat map beautify else AkSim.this.mufgStoryHeat
 
         def data = (for ((hist, day) <- mufgStoryHeat.zipWithIndex; (things, times) <- hist) yield s"$day $things $times").mkString("\n")
@@ -25,7 +25,7 @@ case class AkSim(days: Int = 365, stories: Int = 30, start: Int = 10, opt: Int =
         def write() = {
             val writer = new java.io.PrintWriter("graph.gnu")
             val title = s"$stories stories, 1 MUFG, Max $opt Items in MUFG, Start $start".addIf(beauty, ", \"Normalized\"")
-            val file = f"S$start%02d-I$stories%06d-N$beauty-O$opt.png"
+            val file = f"frame$frame%07d.png"
             writer.println(s"""
                 |set term png size 1920,1080 background rgb 'black'; set output '$file'
                 |set title '$title' tc rgb 'white'; set arrow from -0.5,95 to $days.5,95 nohead ls 12 front
@@ -45,7 +45,8 @@ case class AkSim(days: Int = 365, stories: Int = 30, start: Int = 10, opt: Int =
 }
 
 for {
-    start <- Seq(2, 3)
+    frame <- 1 to 34
+    start <- Seq(1)
     opt <- Seq(95)
     stories <- Seq(10000)
 
@@ -54,5 +55,5 @@ for {
 
     height = 200
     beauty = true
-} sim.Plotter(colorbox = !beauty, beauty = beauty, height = height).plot()
+} sim.Plotter(colorbox = !beauty, beauty = beauty, height = height, frame = frame).plot()
 
